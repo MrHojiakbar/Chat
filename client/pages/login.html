@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign in</title>
+    <link
+      rel="stylesheet"
+      href="../node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body class="bg-light">
+    <div class="container d-flex justify-content-center">
+      <div
+        class="form-elements bg-white mt-5 w-50 d-flex flex-column gap-3 align-items-center shadow p-4 py-5 rounded-3"
+      >
+        <h1>Login</h1>
+
+        <form
+          class="login-form w-75 d-flex flex-column gap-3 align-items-center"
+        >
+          <input
+            class="form-control"
+            type="text"
+            placeholder="name"
+            name="name"
+          />
+          <button class="btn btn-primary w-100" type="submit">Sign in</button>
+        </form>
+      </div>
+    </div>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="module" src="../js/main.js"></script>
+    <script type="module" src="../js/login.js"></script>
+  </body>
+</html>
