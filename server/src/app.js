@@ -4,7 +4,7 @@ import morgan from "morgan"
 import {config} from "dotenv"
 import {createServer} from "node:http"
 import {Server} from "socket.io";
-import userService from "./modules/user/user.service";
+import userService from "./modules/user/user.service.js";
 
 config()
 
@@ -29,13 +29,6 @@ app.use(cors({
 if (process.env.NODE_ENV=="develop") {
     app.use(morgan("tiny"))
 }
-
-// io.on("connection",(socket)=>{
-//     socket.on("message",(msg)=>{
-//         console.log(msg);
-//         socket.emit("message",`Yangi xabar:${msg}`)
-//     })
-// })
 
 io.on("connection", (socket) => {
     console.log("connected")
