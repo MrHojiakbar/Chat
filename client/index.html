@@ -3,11 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
     <title>Chat</title>
 </head>
 <body>
-    <h1>Online real time chat</h1>
+    <h1 class="text-center">Welcome to chat !</h1>
+    <div class="container d-flex justify-content-center">
+        <div
+        class="form-elements bg-white mt-5 w-100 d-flex flex-column gap-3  shadow p-4 py-5 rounded-3"
+      >
+        <div class="typing text-center">
+            <span class="text-info">kimdir yozmoqda...</span>
+        </div>
+        <div class="messages d-flex flex-column gap-3" style="min-height: 300px; max-height: 500px; overflow-y: scroll;"> 
+            <div class="other-messages ">
+                <p class="border d-inline-block p-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, ex?</p>
+                <div class="author fs-6 fw-bolder">Tom Krus <span>15:40</span></div>
+            </div>
+            <div class="my-messages align-self-end">
+                <p class="border d-inline-block p-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, ex?</p>
+                <div class="author fs-6 fw-bolder text-end">Tom Krus <span>15:40</span></div>
+            </div>
+            <div class="join-message">
+                <p class="text-primary text-center border">Kimdir chatga qo'shildi ! <span>12:32</span></p>
+            </div>
+        </div>
+        <form
+          class="uwu w-75 d-flex gap-3 align-items-center"
+        >
+          <input
+            class="message-input w-100"
+            type="text"
+            placeholder="name"
+            name="name"
+          />
+          <button class="btn btn-primary" type="submit">Send</button>
+        </form>
+      </div>
+    </div>
 
-    <script type="module" src="./js/main.js"></script>
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="/main.js"></script>
 </body>
 </html>
