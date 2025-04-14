@@ -45,21 +45,21 @@ io.on("connection", (socket) => {
         socket.emit("login", user)
     })
     socket.on("message",async (data)=>{
-        
-        await messageModel.create({
+       const newMess= await messageModel.create({
             text:data.text,
             user:data.user
         })
-        const allMessages = await messageModel.find().populate('user', null, null, { strictPopulate: false });
-        socket.emit("messages",allMessages)
+        const allMessages = await messageModel.find().populate('user');
+        
+        i.emit("messages",allMessages)
     })
     socket.on("join",async (data) => {
-
         await messageModel.create({
             type:"join-message",
-            user:data.user
+            user:data
         })
         const allMesages=await messageModel.find().populate("user")
+        console.log(allMesages);
         socket.emit("messages",allMesages)
     })
 })

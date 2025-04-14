@@ -10,7 +10,7 @@ const MessageSchema = new mongoose.Schema(
       },
       user: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: "User", // ✅ To‘g‘ri
+        ref: "User", 
       },
     },
     {
