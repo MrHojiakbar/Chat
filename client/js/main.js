@@ -1,6 +1,6 @@
 import { io } from "https://cdn.socket.io/4.8.1/socket.io.esm.min.js";
 
-const socket = io("http://10.10.3.85:4000");
+const socket = io("http://localhost:3000");
 
 const elMessages = document.querySelector(".messages");
 const elForm = document.querySelector(".uwu");
@@ -8,7 +8,7 @@ const elInput = document.querySelector(".message-input");
 
 let user = JSON.parse(localStorage.getItem("user"))
 
-socket.emit("join",user)
+socket.emit("join",user.data)
 
 socket.on("typing",(name)=>{
     document.querySelector(".text-info").textContent=`${name} yozmoqda`
@@ -19,7 +19,7 @@ socket.on("messages", (msgs) => {
         if (msg.user) {
             if (msg.type === "message") {
                 const html = `
-                <div class="${msg.user._id === user._id ? "my-messages align-self-end text-end" : "other-messages"}">
+                <div class="${msg.user._id === user.data._id ? "my-messages align-self-end text-end" : "other-messages"}">
                     <p class="border d-inline-block p-2">${msg.text}</p>
                     <div class="author fs-6 fw-bolder">${msg.user.name} <span>${msg.createdAt}</span></div>
                 </div>
@@ -40,18 +40,23 @@ socket.on("messages", (msgs) => {
 
 elInput.addEventListener("keyup", (e) => {  
     
-    socket.emit("typing", { user: user._id });
+    socket.emit("typing", { user: user.data._id });
 });
 
 elForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const text = elInput.value.trim();
-  if (text && user) {
-    const data={ user: user._id, text }
-    
-    socket.emit("message", data);
-    elInput.value = ""; 
-  }
-});
+    e.preventDefault();
+    const text = elInput.value.trim();
+    if (text && user.data) {
+      
+      socket.emit("message", {
+        text: elInput.value.trim(),
+        user: user.data._id,
+        room: user.room 
+      });
+      
+      elInput.value = ""; 
+    }
+  });
+  
 
 export default socket;

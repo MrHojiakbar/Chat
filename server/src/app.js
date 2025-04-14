@@ -36,31 +36,59 @@ io.on("connection", (socket) => {
     console.log("connected")
     socket.on("typing",async(data)=>{
         const user=await userModel.findById(data?.user)
+        console.log(data,user);
         
         socket.broadcast.emit("typing",user?.name)
     })
-    socket.on("login", async (data) => {
-        console.log("come to login")
-        const user = await userService.createUser(data)
-        socket.emit("login", user)
-    })
-    socket.on("message",async (data)=>{
-       const newMess= await messageModel.create({
-            text:data.text,
-            user:data.user
-        })
+    socket.on("message", async (data) => {
+        
+        const newMess = await messageModel.create({
+            text: data.text,
+            user: data.user
+        });
+    
         const allMessages = await messageModel.find().populate('user');
         
-        i.emit("messages",allMessages)
-    })
-    socket.on("join",async (data) => {
+        io.to(data.room).emit("messages", allMessages);
+    });
+    socket.on("login", async (data) => {
+        console.log(`User ${data.name} shu room ga kirmoqchi ${data.room}`);
+        
+        const newUser = await userService.createUser(data.name);
+    
+        const previousRoom = socket.rooms.values().next().value;
+        if (previousRoom && previousRoom !== data.room) {
+            socket.leave(previousRoom);
+            console.log(`${data.name} shu roomdan chiqib ketdi ${previousRoom}`);
+        }
+    
+        if (data.room) {
+            socket.join(data.room);
+            console.log(`${data.name} shu room ga qoshildi ${data.room}`);
+        }
+    
+        socket.emit("login", { ...newUser, room: data.room });
+    });
+    
+    socket.on("join", async (data) => {
         await messageModel.create({
-            type:"join-message",
-            user:data
-        })
-        const allMesages=await messageModel.find().populate("user")
-        console.log(allMesages);
-        socket.emit("messages",allMesages)
-    })
+            type: "join-message",
+            user: data.user
+        });
+    
+        const previousRoom = socket.rooms.values().next().value;
+        if (previousRoom && previousRoom !== data.room) {
+            socket.leave(previousRoom);
+            console.log(`${data.user} left room ${previousRoom}`);
+        }
+    
+        socket.join(data.room);
+        console.log(`${data.user} joined room ${data.room}`);
+        
+        const allMessages = await messageModel.find().populate("user");
+        io.to(data.room).emit("messages", allMessages);
+    });
+    
+    
 })
 export default server

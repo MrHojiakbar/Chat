@@ -1,16 +1,21 @@
 import { io } from "https://cdn.socket.io/4.8.1/socket.io.esm.min.js";
-const elForm = document.querySelector(".login-form");
 
-const socket = io("http://10.10.3.85:4000")
+const elForm = document.querySelector(".login-form");
+const socket = io("http://localhost:3000");
 
 elForm.addEventListener("submit", (e) => {
   e.preventDefault();
+
+  const room = document.querySelector(".nameRoom").value;
   const name = e.target.name.value;
-  socket.emit("login", name);
-  socket.on("login", ({ data }) => {
+
+  socket.emit("login", { name, room });
+
+  socket.on("login", (data) => {
+    console.log(data);
+    
     localStorage.setItem("user", JSON.stringify(data));
-    user = data;    
+    window.location.href = "/";
   });
-  
-  window.location.href = "/";
 });
+
