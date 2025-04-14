@@ -35,7 +35,8 @@ if (process.env.NODE_ENV=="develop") {
 io.on("connection", (socket) => {
     console.log("connected")
     socket.on("typing",async(data)=>{
-        const user=await userModel.findById(data?.id)
+        const user=await userModel.findById(data?.user)
+        
         socket.broadcast.emit("typing",user?.name)
     })
     socket.on("login", async (data) => {
@@ -45,7 +46,7 @@ io.on("connection", (socket) => {
     })
     socket.on("message",async (data)=>{
         
-        const newMessage=await messageModel.create({
+        await messageModel.create({
             text:data.text,
             user:data.user
         })
@@ -53,7 +54,8 @@ io.on("connection", (socket) => {
         socket.emit("messages",allMessages)
     })
     socket.on("join",async (data) => {
-        const newMessage=await messageModel.create({
+
+        await messageModel.create({
             type:"join-message",
             user:data.user
         })
